@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Specify path variable
+#PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+# Kill me on all errors
+set -e
+
+case "$1" in
+  start)
+    ${:command}
+    ;;
+  stop)
+    kill `cat ${:pidfile}`
+    ;;    
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+    ;;
+esac
+

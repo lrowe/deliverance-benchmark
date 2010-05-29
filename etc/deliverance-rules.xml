@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset>
+
+ <match path="/" class="general" />
+ <theme href="/theme/index.html" />
+
+ <rule class="general" suppress-standard="1"> 
+  
+  <prepend
+      content='/html/head/base'
+      theme='/html/head'
+      />
+  <append
+      content="attributes(id,class):/html/body"
+      theme="attributes:/html/body"
+      />
+
+  <replace
+      content="children:/html/head/title"
+      theme="children:/html/head/title"
+      />
+      
+  <replace 
+      content="children:#portal-globalnav"
+      theme="children:#menu"
+      />
+
+  <replace
+      content="children:#portal-searchbox"
+      theme="children:#search"
+      />
+  <drop
+      theme="#search .searchSection"
+      />
+  <drop
+      theme="#search label"
+      />
+  <drop
+      theme="#portal-advanced-search"
+      />
+      
+  <replace
+      content="children:#content"
+      theme="children:#content-bgbtm"
+      />
+      
+  <replace
+      content="children:#portal-column-two"
+      theme="children:#sidebar"
+      />
+      
+  <replace
+      content="children:#portal-colophon>div.colophonWrapper>ul>li"
+      theme="children:#footer p"
+      />
+      
+  <append 
+      if-content="#disqus_thread"
+      content="children:#viewlet-below-content"
+      theme="children:#content-bgbtm"
+      />
+  
+  <drop
+      theme="#content .discussion"
+      />
+
+ </rule>
+
+</ruleset>

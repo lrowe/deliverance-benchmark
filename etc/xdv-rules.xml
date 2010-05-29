@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules xmlns="http://namespaces.plone.org/xdv"
+       xmlns:css="http://namespaces.plone.org/xdv+css">
+
+  <replace
+      content="/html/head/title"
+      theme="/html/head/title"
+      />
+  <copy
+      css:content="#portal-globalnav"
+      css:theme="#menu"
+      />
+  <prepend
+      content='/html/head/base'
+      theme='/html/head'
+      />
+  <!--append
+      content="/html/body/@class"
+      theme="/html/body"
+      /-->
+  <append
+      content="/html/body/@id"
+      theme="/html/body"
+      />
+
+
+  <copy
+      css:content="#portal-searchbox"
+      css:theme="#search"
+      />
+  <drop
+      css:theme="#search .searchSection"
+      />
+  <drop
+      css:theme="#search label"
+      />
+  <drop
+      css:theme="#portal-advanced-search"
+      />
+      
+  <copy
+      css:content="#content > *"
+      css:theme="#content-bgbtm"
+      />
+      
+  <copy
+      css:content="#portal-column-two"
+      css:theme="#sidebar"
+      />
+      
+  <copy
+      css:content="#portal-colophon>div.colophonWrapper>ul>li"
+      css:theme="#footer p"
+      />
+      
+  <!--append 
+      if-content="#disqus_thread"
+      css:content="#viewlet-below-content"
+      css:theme="#content-bgbtm"
+      /-->
+  
+  <drop
+      css:theme="#content .discussion"
+      />
+
+</rules>
+

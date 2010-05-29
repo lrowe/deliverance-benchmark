@@ -1,0 +1,46 @@
+worker_processes 1;
+error_log ${buildout:directory}/var/log/nginx-error.log debug;
+
+events {
+#    worker_connections  1024;
+}
+
+http {
+    include ${buildout:directory}/etc/mime.types;
+#    gzip on;
+    server {
+        listen ${port};
+        server_name 127.0.0.1;
+        autoindex on;
+
+        location /theme {
+            alias ${theme};
+        }
+
+        location /static {
+            alias ${content};
+        }
+
+        location /static-xdv {
+            alias ${content};
+            xslt_stylesheet ${theme.xsl};
+            xslt_html_parser on;
+            xslt_types text/html;
+        }
+
+        location /plone {
+            proxy_pass http://127.0.0.1:8080/VirtualHostBase/http/127.0.0.1:8002/garbas.si/Plone/VirtualHostRoot/_vh_plone/;
+        }
+        location /plone-xdv {
+            proxy_pass http://127.0.0.1:8080/VirtualHostBase/http/127.0.0.1:8002/garbas.si/Plone/VirtualHostRoot/_vh_plone/;
+            xslt_stylesheet ${theme.xsl};
+            xslt_html_parser on;
+            xslt_types text/html;
+        }
+#        location /deliverance {
+#            uwsgi_pass   unix:///tmp/uwsgi.sock;
+#            include        uwsgi_params;
+#        }
+    }
+}
+
