@@ -1,58 +1,35 @@
+# -*- coding: utf-8 -*-
+"""Deliverance / XDV benchmark
+"""
 
-import os
-
-REQNUM = 100
-REPEAT = 10
-#TESTS = {
-#    'nginx': {'url': 'http://127.0.0.1:8000',
-#              'tests': {'static':               '/static/',
-#                        'static + xdv':         '/static-xdv/',
-#                        'plone':                '/plone/',
-#                        'plone + xdv':          '/plone-xdv/',}},
-#    'paster': {'url': 'http://127.0.0.1:8001',
-#              'tests': {'static':               '/static/',
-#                        'static + xdv':         '/static-xdv/',
-#                        'static + deliverance': '/static-deliverance/',
-#                        'plone':                '/plone/',
-#                        'plone + xdv':          '/plone-xdv/',
-#                        'plone + deliverance':  '/plone-deliverance/',}},
-TESTS = {
-    'gunicorn': {'url': 'http://127.0.0.1:8002',
-              'tests': {'static':               '/static/',
-                        'static + xdv':         '/static-xdv/',
-                        'static + deliverance': '/static-deliverance/',
-                        'plone':                '/plone/',
-                        'plone + xdv':          '/plone-xdv/',
-                        'plone + deliverance':  '/plone-deliverance/',}},
-    }
-COMMAND = 'ab -n %s %s'
+import unittest
+import funkload.FunkLoadTestCase
 
 
-RESULTS = {}
-for item in TESTS:
-    print item
-    if item not in RESULTS.keys():
-        RESULTS[item] = {}
+class bench(funkload.FunkLoadTestCase.FunkLoadTestCase):
+    """ This test use a configuration file Simple.conf.
+    """
 
-    for repeat in range(REPEAT+1):
-        print '  |--> '+str(repeat)
-        for test in TESTS[item]['tests']:
-            testres = float(os.popen(COMMAND % (REQNUM, TESTS[item]['url']+TESTS[item]['tests'][test])).read().split('Time per request:')[1].strip().split(' ')[0])
+    __name__ = 'bench'
 
-            # warming up
-            if repeat == 0:
-                continue
+    def setUp(self):
+        """ Setting up test.
+        """
+        self.logd("setUp")
+        self.label = 'Deliverance / XDV benchmark'
+        self.server_url = self.conf_get('main', 'url')
+        self.nb_time = self.conf_getInt('test_bench', 'nb_time')
 
-            if test not in RESULTS[item].keys():
-                RESULTS[item][test] = []
-            RESULTS[item][test].append(testres)
-            print '    |--> '+test + ' --> '+str(testres)
+    def test_all(self):
+        for i in range(self.nb_time):
+            for path in ['/static/', '/static-xdv/', '/static-deliverance/']:
+                self.get(self.server_url+path, description=path)
 
-print '----------------'
-print 'Final results:'
-print '----------------'
-for item in RESULTS:
-    print item
-    for test in RESULTS[item]:
-        print '  |--> '+test+' - '+str(sum(RESULTS[item][test])/len(RESULTS[item][test]))
-print '----------------'
+
+def test_suite():
+    return unittest.makeSuite(bench)
+
+additional_tests = test_suite
+
+if __name__ in ('main', '__main__'):
+    unittest.main(defaultTest='test_suite')

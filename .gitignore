@@ -1,0 +1,12 @@
+*.pyc
+*.swp
+/.installed.cfg
+/.mr.developer.cfg
+/bin/
+/build/
+/eggs/
+/include/
+/lib/
+/parts/
+/pip-log.txt
+/var/
